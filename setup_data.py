@@ -28,9 +28,9 @@ def download(dataset_name, data_source):
         subprocess.run(["unzip","-q",os.path.join(data_root,file),"-d",data_root],capture_output=True)
         print(f"done extracting {file}")
         
-data_source = {"annotations":os.environment("annotations"),
-              "train": os.environment("train"),
-              "val":os.environment("val")}
+data_source = {"annotations":os.getenv("annotations"),
+              "train": os.getenv("train"),
+              "val":os.getenv("val")}
 
 
 dataset_name= "crowdhuman"
