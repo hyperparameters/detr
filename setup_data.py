@@ -1,6 +1,7 @@
 from pycocotools.coco import COCO
 from matplotlib import pyplot as plt
 import numpy as np
+import torch
 
 DATA_HOME= "datasets/"
 
@@ -34,3 +35,10 @@ data_source = {"annotations":os.environment("annotations"),
 
 dataset_name= "crowdhuman"
 download(dataset_name,data_source)
+
+print("downloading model...")
+checkpoint = torch.load("detr-r50-e632da11.pth", map_location='cpu')
+del checkpoint["model"]["class_embed.weight"]
+del checkpoint["model"]["class_embed.bias"]
+torch.save(checkpoint,"detr-r50_no-class-head.pth")
+print("model downloaded")
