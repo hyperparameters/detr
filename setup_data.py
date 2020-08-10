@@ -28,18 +28,19 @@ def download(dataset_name, data_source):
         subprocess.run(["unzip","-q",os.path.join(data_root,file),"-d",data_root],capture_output=True)
         print(f"done extracting {file}")
         
-data_source = {"annotations":os.getenv("annotations"),
-              "train": os.getenv("train"),
-              "val":os.getenv("val")}
+def setup():
+    data_source = {"annotations":os.getenv("annotations"),
+                  "train": os.getenv("train"),
+                  "val":os.getenv("val")}
 
 
-dataset_name= "crowdhuman"
-download(dataset_name,data_source)
+    dataset_name= "crowdhuman"
+    download(dataset_name,data_source)
 
-print("downloading model...")
-wget.download("https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth")
-checkpoint = torch.load("detr-r50-e632da11.pth", map_location='cpu')
-del checkpoint["model"]["class_embed.weight"]
-del checkpoint["model"]["class_embed.bias"]
-torch.save(checkpoint,"detr-r50_no-class-head.pth")
-print("model downloaded")
+    print("downloading model...")
+    wget.download("https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth")
+    checkpoint = torch.load("detr-r50-e632da11.pth", map_location='cpu')
+    del checkpoint["model"]["class_embed.weight"]
+    del checkpoint["model"]["class_embed.bias"]
+    torch.save(checkpoint,"detr-r50_no-class-head.pth")
+    print("model downloaded")
